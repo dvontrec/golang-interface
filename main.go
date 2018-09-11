@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 )
@@ -14,12 +15,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	// create a byte slice with lots of empty spaces, read function does not resize slice, only adds until full
-	bs := make([]byte, 99999)
-
-	// Saves the response body to the byte slice
-	resp.Body.Read(bs)
-
-	// prints out the body as a string
-	fmt.Println(string(bs))
+	// Takes the response body and writes it to the os.Stdout
+	io.Copy(os.Stdout, resp.Body)
 }
